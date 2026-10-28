@@ -303,23 +303,18 @@ def read_root():
 
 def seed_data(db: Session = Depends(get_db)):  
 
-    admin_role = Role(name="admin")  
+    admin_role = Role(name="administrator")
+    lecturer_role = Role(name="lecturer")
+    student_role = Role(name="student")
+    db.add_all([admin_role, lecturer_role, student_role])
 
-    student_role = Role(name="student")  
+    test_user = User(username="johndoe", email="john@example.com", password_hash="hashed_password")
+    test_user.roles.append(admin_role)
 
-    db.add_all([admin_role, student_role])  
+    db.add(test_user)
 
- 
-
-    test_user = User(username="johndoe", email="john@example.com", password="hashed_password")  
-
-    test_user.roles.append(admin_role)  
-
-    db.add(test_user)  
-
+    db.commit()
      
-
-    db.commit()  
 
     return {"message": "Data seeded successfully!"}  
 
@@ -331,4 +326,4 @@ if __name__ == "__main__":
 
     # Run from app folder or root, it doesn't matter now 
 
-    uvicorn.run("app.main:app", host="127.0.0.1", port=8000, reload=False) 
+    uvicorn.run("app.main:app", host="127.0.0.1", port=8000, reload=False)
