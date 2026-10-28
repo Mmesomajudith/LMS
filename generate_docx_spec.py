@@ -11,6 +11,7 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.table import WD_TABLE_ALIGNMENT, WD_ALIGN_VERTICAL
 from docx.oxml import OxmlElement, parse_xml
 from docx.oxml.ns import nsdecls, qn
+from docx.enum.section import WD_SECTION, WD_ORIENT
 
 
 def set_cell_background(cell, hex_color: str):
@@ -221,6 +222,14 @@ def build_document():
         "and the relationship of each entity to the Identity, Course & Material, Assessment, CMB, and Audit domains."
     )
 
+    er_section = doc.add_section(WD_SECTION.NEW_PAGE)
+    er_section.orientation = WD_ORIENT.LANDSCAPE
+    er_section.page_width, er_section.page_height = er_section.page_height, er_section.page_width
+    er_section.top_margin = Inches(0.55)
+    er_section.bottom_margin = Inches(0.55)
+    er_section.left_margin = Inches(0.55)
+    er_section.right_margin = Inches(0.55)
+
     er_path = "complete_er_diagram.png"
     if os.path.exists(er_path):
         p_img = doc.add_paragraph()
@@ -228,7 +237,7 @@ def build_document():
         p_img.paragraph_format.space_before = Pt(6)
         p_img.paragraph_format.space_after = Pt(4)
         run_img = p_img.add_run()
-        run_img.add_picture(er_path, width=Inches(6.6))
+        run_img.add_picture(er_path, width=Inches(9.8))
         p_cap = doc.add_paragraph(
             "Figure 1: Complete Entity-Relationship Diagram — all 27 LMS tables and all documented foreign-key connections."
         )
@@ -238,17 +247,13 @@ def build_document():
         p_cap.runs[0].font.color.rgb = RGBColor(100, 116, 139)
         p_cap.paragraph_format.space_after = Pt(12)
 
-    # Logical-domain relationship summary retained after the exhaustive diagram.
-
-    doc.add_paragraph(
-        "The logical architecture is partitioned into five distinct functional domains:",
-        style="Normal"
-    )
-    doc.add_paragraph("1. Identity & Access: Users, system roles, role assignments, and administrator approval events for lecturers.", style="List Bullet")
-    doc.add_paragraph("2. Courses & Materials: Courses, enrolments, concepts, prerequisite dependency graphs, documents, and citable sections.", style="List Bullet")
-    doc.add_paragraph("3. Assessment Lifecycle: Assignments, position-indexed questions, submissions, and question-level marks.", style="List Bullet")
-    doc.add_paragraph("4. Concept-to-Mastery Bridge (CMB): Diagnostic sessions, student responses, candidate explanation hypotheses, interventions, recommended reading passages, and fresh verification items.", style="List Bullet")
-    doc.add_paragraph("5. Audit & AI Gateway: Polymorphic user activity logs, external AI Gateway requests, and prompt grounding citations.", style="List Bullet")
+    portrait_section = doc.add_section(WD_SECTION.NEW_PAGE)
+    portrait_section.orientation = WD_ORIENT.PORTRAIT
+    portrait_section.page_width, portrait_section.page_height = portrait_section.page_height, portrait_section.page_width
+    portrait_section.top_margin = Inches(0.85)
+    portrait_section.bottom_margin = Inches(0.85)
+    portrait_section.left_margin = Inches(0.85)
+    portrait_section.right_margin = Inches(0.85)
 
     # ----------------------------------------------------
     # 3. COMPLETE PHYSICAL RELATIONAL SCHEMA DIAGRAM
