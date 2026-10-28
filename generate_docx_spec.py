@@ -216,13 +216,12 @@ def build_document():
     h2.runs[0].font.color.rgb = RGBColor(30, 58, 138)
 
     doc.add_paragraph(
-        "Figure 1 illustrates the high-level Conceptual and Logical Entity-Relationship (ER) architecture of the "
-        "Learning Management System. The diagram represents the domain entities, high-level business relationships, "
-        "and workflow pathways linking the foundation LMS tier, the Concept-to-Mastery Bridge (CMB) state machine, "
-        "and the security/audit subsystems."
+        "Figure 1 illustrates the complete logical Entity-Relationship architecture of the Learning Management System. "
+        "The diagram includes every one of the 27 physical tables, every foreign-key connection, each junction table, "
+        "and the relationship of each entity to the Identity, Course & Material, Assessment, CMB, and Audit domains."
     )
 
-    er_path = "er_diagram.png"
+    er_path = "complete_er_diagram.png"
     if os.path.exists(er_path):
         p_img = doc.add_paragraph()
         p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -230,12 +229,16 @@ def build_document():
         p_img.paragraph_format.space_after = Pt(4)
         run_img = p_img.add_run()
         run_img.add_picture(er_path, width=Inches(6.6))
-        p_cap = doc.add_paragraph("Figure 1: Conceptual & Logical Entity-Relationship (ER) Diagram of the LMS Architecture.")
+        p_cap = doc.add_paragraph(
+            "Figure 1: Complete Entity-Relationship Diagram — all 27 LMS tables and all documented foreign-key connections."
+        )
         p_cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
         p_cap.runs[0].font.size = Pt(8.5)
         p_cap.runs[0].font.italic = True
         p_cap.runs[0].font.color.rgb = RGBColor(100, 116, 139)
         p_cap.paragraph_format.space_after = Pt(12)
+
+    # Logical-domain relationship summary retained after the exhaustive diagram.
 
     doc.add_paragraph(
         "The logical architecture is partitioned into five distinct functional domains:",
