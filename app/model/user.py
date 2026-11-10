@@ -1,5 +1,5 @@
 """User ORM model."""
-from sqlalchemy import Column, Integer, String, DateTime, CheckConstraint, func
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, CheckConstraint, func
 from sqlalchemy.orm import relationship, synonym
 from app.database import Base
 
@@ -10,6 +10,7 @@ class User(Base):
     email = Column(String(255), unique=True, index=True, nullable=False)
     password_hash = Column(String(255), nullable=False)
     account_status = Column(String(50), nullable=False, default="active", server_default="active")
+    department_id = Column(Integer, ForeignKey("departments.department_id", name="fk_users_department_id_departments", ondelete="SET NULL"), nullable=True, index=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     __table_args__ = (CheckConstraint("account_status IN ('active', 'inactive', 'disabled')", name="check_user_account_status"),)
     id = synonym("user_id")
@@ -24,3 +25,4 @@ class User(Base):
     uploaded_materials = relationship("Material", back_populates="uploader")
     access_logs = relationship("AccessLog", back_populates="user")
     ai_gateway_requests = relationship("AIGatewayRequest", back_populates="user")
+    department = relationship("Department", foreign_keys="[User.department_id]", back_populates="users")

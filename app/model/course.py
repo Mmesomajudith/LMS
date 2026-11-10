@@ -12,9 +12,11 @@ class Course(Base):
     course_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     title = Column(String(255), nullable=False, index=True)
     owner_user_id = Column(Integer, ForeignKey("users.user_id", ondelete="RESTRICT"), nullable=False, index=True)
+    department_id = Column(Integer, ForeignKey("departments.department_id", name="fk_courses_department_id_departments", ondelete="RESTRICT"), nullable=False, index=True)
     ai_enabled = Column(Boolean, nullable=False, default=True, server_default="true")
 
     owner = relationship("User", back_populates="owned_courses")
+    department = relationship("Department", back_populates="courses")
     enrolments = relationship("Enrolment", back_populates="course", cascade="all, delete-orphan")
     concepts = relationship("Concept", back_populates="course", cascade="all, delete-orphan")
     materials = relationship("Material", back_populates="course", cascade="all, delete-orphan")

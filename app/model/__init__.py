@@ -30,6 +30,8 @@ from app.model.followup_result import FollowupResult
 from app.model.access_log import AccessLog
 from app.model.ai_gateway_request import AIGatewayRequest
 from app.model.ai_gateway_request_source import AIGatewayRequestSource
+from app.model.faculty import Faculty
+from app.model.department import Department
 
 __all__ = [
     "User", "Role", "UserRole", "LecturerApprovalEvent", "user_role_association",
@@ -38,5 +40,5 @@ __all__ = [
     "QuestionConcept", "Submission", "Mark", "CMBItem", "CMBItemConcept",
     "DiagnosticSession", "Response", "CandidateExplanation", "Intervention",
     "RecommendedResource", "FollowupResult", "AccessLog", "AIGatewayRequest",
-    "AIGatewayRequestSource",
+    "AIGatewayRequestSource", "Faculty", "Department",
 ]
