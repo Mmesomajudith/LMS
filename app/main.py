@@ -32,9 +32,8 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db, engine, DATABASE_URL 
 
-from app.model.User import User
-from app.model.Role import Role
-from app.model.user_role import user_role_association
+from app.controllers.model_controller import seed_demo_data
+from app.routes.model_routes import router as model_router
 
  
 
@@ -288,6 +287,7 @@ async def lifespan(app: FastAPI):
  
 
 app = FastAPI(lifespan=lifespan)  
+app.include_router(model_router)
 
  
 
@@ -300,23 +300,8 @@ def read_root():
  
 
 @app.post("/seed-data")  
-
 def seed_data(db: Session = Depends(get_db)):  
-
-    admin_role = Role(name="administrator")
-    lecturer_role = Role(name="lecturer")
-    student_role = Role(name="student")
-    db.add_all([admin_role, lecturer_role, student_role])
-
-    test_user = User(username="johndoe", email="john@example.com", password_hash="hashed_password")
-    test_user.roles.append(admin_role)
-
-    db.add(test_user)
-
-    db.commit()
-     
-
-    return {"message": "Data seeded successfully!"}  
+    return seed_demo_data(db)
 
  
 
